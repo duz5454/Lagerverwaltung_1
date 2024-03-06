@@ -74,4 +74,13 @@ static void LoadData()
     }
 }
 
-
+static void SaveData()
+{
+    using (StreamWriter writer = new StreamWriter(dataFilePath))
+    {
+        foreach (Article article in articles)
+        {
+            writer.WriteLine($"{article.Name},{article.Description},{article.Price},{article.Stock}");
+        }
+    }
+}
