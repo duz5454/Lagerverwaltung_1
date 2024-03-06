@@ -54,3 +54,24 @@ class Program
         }
     }
 }
+
+static void LoadData()
+{
+    if (File.Exists("C:\\4AD\\SWP\\20240606\\Lagerverwaltung\\Lagerverwaltung\\bin\\Debug"))
+    {
+        string[] lines = File.ReadAllLines(dataFilePath);
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(',');
+            string name = parts[0];
+            string description = parts[1];
+            double price = double.Parse(parts[2]);
+            int stock = int.Parse(parts[3]);
+
+            Article article = new Article(name, description, price, stock);
+            articles.Add(article);
+        }
+    }
+}
+
+
