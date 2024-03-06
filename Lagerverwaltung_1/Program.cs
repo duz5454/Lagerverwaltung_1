@@ -53,34 +53,70 @@ class Program
             }
         }
     }
-}
 
-static void LoadData()
-{
-    if (File.Exists("C:\\4AD\\SWP\\20240606\\Lagerverwaltung\\Lagerverwaltung\\bin\\Debug"))
+
+    static void LoadData()
     {
-        string[] lines = File.ReadAllLines(dataFilePath);
-        foreach (string line in lines)
+        if (File.Exists("C:\\4AD\\SWP\\20240606\\Lagerverwaltung\\Lagerverwaltung\\bin\\Debug"))
         {
-            string[] parts = line.Split(',');
-            string name = parts[0];
-            string description = parts[1];
-            double price = double.Parse(parts[2]);
-            int stock = int.Parse(parts[3]);
+            string[] lines = File.ReadAllLines(dataFilePath);
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(',');
+                string name = parts[0];
+                string description = parts[1];
+                double price = double.Parse(parts[2]);
+                int stock = int.Parse(parts[3]);
 
-            Article article = new Article(name, description, price, stock);
-            articles.Add(article);
+                Article article = new Article(name, description, price, stock);
+                articles.Add(article);
+            }
+        }
+    }
+
+    static void SaveData()
+    {
+        using (StreamWriter writer = new StreamWriter(dataFilePath))
+        {
+            foreach (Article article in articles)
+            {
+                writer.WriteLine($"{article.Name},{article.Description},{article.Price},{article.Stock}");
+            }
+        }
+    }
+    static void AddArticle()
+    {
+        Console.WriteLine("Neuen Artikel hinzufügen:");
+        Console.Write("Name: ");
+        string name = Console.ReadLine();
+        Console.Write("Beschreibung: ");
+        string description = Console.ReadLine();
+        Console.Write("Preis: ");
+        double price = double.Parse(Console.ReadLine());
+        Console.Write("Bestand: ");
+        int stock = int.Parse(Console.ReadLine());
+
+        Article newArticle = new Article(name, description, price, stock);
+        articles.Add(newArticle);
+
+        Console.WriteLine("Artikel erfolgreich hinzugefügt.");
+    }
+
+    static void SearchArticle()
+    {
+        Console.Write("Artikelname eingeben: ");
+        string searchName = Console.ReadLine();
+
+        Article article = articles.FirstOrDefault(a => a.Name == searchName);
+
+        if (article != null)
+        {
+            Console.WriteLine($"Artikel gefunden: {article.Name}, Beschreibung: {article.Description}, Preis: {article.Price}, Bestand: {article.Stock}");
+        }
+        else
+        {
+            Console.WriteLine("Artikel nicht gefunden.");
         }
     }
 }
 
-static void SaveData()
-{
-    using (StreamWriter writer = new StreamWriter(dataFilePath))
-    {
-        foreach (Article article in articles)
-        {
-            writer.WriteLine($"{article.Name},{article.Description},{article.Price},{article.Stock}");
-        }
-    }
-}
